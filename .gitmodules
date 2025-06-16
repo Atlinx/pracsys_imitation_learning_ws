@@ -6,7 +6,6 @@
 	path = robotiq_arg85_description
 	url = https://github.com/a-price/robotiq_arg85_description.git
 	branch = master
-[submodule "pinocchio"]
-	path = pinocchio
-	url = https://github.com/stack-of-tasks/pinocchio-ros-release.git
-	branch = release/noetic/pinocchio
+[submodule "zed-ros-wrapper"]
+	path = zed-ros-wrapper
+	url = https://github.com/stereolabs/zed-ros-wrapper.git
