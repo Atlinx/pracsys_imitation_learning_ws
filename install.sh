@@ -6,7 +6,7 @@ if ! lsb_release -d | grep -q "Ubuntu 20.04"; then
   echo -e "\e[31m🛑 OS is not Ubuntu 20.04. 
    Please run the installer on Ubuntu 20.04.
    See https://ubuntu.com/tutorials/install-ubuntu-desktop for a tutorial.
-\e[0m"
+\e[0m"url -L https://download.stereolabs.com/zedsdk/4.2/cu12/ubuntu20 -o installer.run
   missing_deps=true
 fi
 if [ ! -e "/usr/local/zed/" ]; then
@@ -29,6 +29,6 @@ if [ "$missing_deps" = "true" ]; then
   fi
 fi
 
-sudo apt install ros-noetic-ur-robot-driver ros-noetic-ur-calibration
+sudo apt install ros-noetic-ur-robot-driver ros-noetic-ur-calibration -y
 
 git submodule update --init --recursive
