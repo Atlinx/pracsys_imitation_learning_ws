@@ -14,15 +14,3 @@ do
 	fi
 	I=$((I+1))
 done
-cd motoman
-git submodule init
-git submodule update
-cd robotiq
-git checkout noetic-devel
-git pull
-cd ../../pracsys_vbnpm
-git submodule init
-git submodule update
-cd scripts/fusion
-git checkout master
-git pull
