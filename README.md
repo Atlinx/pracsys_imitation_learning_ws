@@ -3,15 +3,19 @@ An organized collection of ROS packages for planning and control of robot manipu
 
 ## Overview
 - `motoman`
-  - Drivers for motoman.
+  - Drivers for motoman robots.
 - `robotiq_arg95_description`
-  - Drivers for Robotiq 2f85 gripper.
+  - Drivers for the Robotiq 2f85 gripper.
 - `zed-ros-wrapper`
   - Drivers for ZED Mini cameras.
 - `ros-noetic-ur-robot-driver` `(apt installed)`
   - Drivers for UR5e robot.
 - `ros-noetic-ur-calibration` `(apt installed)`
   - Drivers for Universal Robots.
+- `lerobot`
+  - ML robotics framework. Installed as python package.
+- `gello_software`
+  - Teleoperation framework. Installed as python package.
 
 ## Setup Workspace
 1. Clone the repository under your catkin workspace as `src`, and then enter the `src` directory:

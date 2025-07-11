@@ -1,4 +1,6 @@
-#!/usr/bin/bash
+#!/bin/bash
+SCRIPT_DIR="$(dirname -- "$( readlink -f -- "$0"; )")"
+cd $SCRIPT_DIR
 
 # Check dependencies
 missing_deps=false
@@ -29,6 +31,25 @@ if [ "$missing_deps" = "true" ]; then
   fi
 fi
 
+# Install UR5 drivers
+echo "Installing UR5 drivers..."
 sudo apt install ros-noetic-ur-robot-driver ros-noetic-ur-calibration -y
 
 git submodule update --init --recursive
+mv zed-ros-wrapper/zed-ros-interfaces zed-ros-interfaces
+
+# Install lerobot package
+echo "Installing LeRobot package..."
+cd $SCRIPT_DIR/lerobot
+pip install -e .
+touch CATKIN_IGNORE
+
+# Install gello package
+echo "Installing Gello package..."
+cd $SCRIPT_DIR/gello_software
+git submodule init
+git submodule update
+pip install -r requirements.txt
+pip install -e .
+pip install -e third_party/DynamixelSDK/python
+touch CATKIN_IGNORE
