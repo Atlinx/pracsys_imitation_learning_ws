@@ -41,7 +41,7 @@ mv zed-ros-wrapper/zed-ros-interfaces zed-ros-interfaces
 # Install lerobot package
 echo "Installing LeRobot package..."
 cd $SCRIPT_DIR/lerobot
-pip install -e .
+pip3.11 install -e .
 touch CATKIN_IGNORE
 
 # Install gello package
@@ -49,7 +49,7 @@ echo "Installing Gello package..."
 cd $SCRIPT_DIR/gello_software
 git submodule init
 git submodule update
-pip install -r requirements.txt
-pip install -e .
-pip install -e third_party/DynamixelSDK/python
+pip3 install -r requirements.txt
+pip3 install -e .
+pip3 install -e third_party/DynamixelSDK/python
 touch CATKIN_IGNORE
