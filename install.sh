@@ -46,7 +46,9 @@ pip3.11 install -e .
 touch CATKIN_IGNORE
 
 # Ignore Motoman packages
-./motoman/ignore_pkgs.sh
+echo "Setting up Motoman package..."
+cd $SCRIPT_DIR/motoman
+./ignore_pkgs.sh
 
 # Install Gello package
 echo "Installing Gello package..."
