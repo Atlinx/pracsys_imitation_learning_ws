@@ -35,16 +35,20 @@ fi
 echo "Installing UR5 drivers..."
 sudo apt install ros-noetic-ur-robot-driver ros-noetic-ur-calibration -y
 
+# Install submodules
 git submodule update --init --recursive
 mv zed-ros-wrapper/zed-ros-interfaces zed-ros-interfaces
 
-# Install lerobot package
+# Install LeRobot package
 echo "Installing LeRobot package..."
 cd $SCRIPT_DIR/lerobot
 pip3.11 install -e .
 touch CATKIN_IGNORE
 
-# Install gello package
+# Ignore Motoman packages
+./motoman/ignore_pkgs.sh
+
+# Install Gello package
 echo "Installing Gello package..."
 cd $SCRIPT_DIR/gello_software
 git submodule init
