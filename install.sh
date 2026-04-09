@@ -31,6 +31,9 @@ if [ "$missing_deps" = "true" ]; then
   fi
 fi
 
+# Init recursive
+git submodule update --init --recursive
+
 # Install UR5 drivers
 echo "Installing UR5 drivers..."
 sudo apt install ros-noetic-ur-robot-driver ros-noetic-ur-calibration -y
