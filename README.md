@@ -1,34 +1,20 @@
 # PRACSYS Imitation Learning WS
-An organized collection of ROS packages for planning and control of robot manipulators at PRACSYS lab. This is specifically for the Imitation Learning project.
+A Catkin ROS workspace for the Imitation Learning repository at PRACSYS lab.
 
 ## Overview
-- `motoman`
-  - Drivers for motoman robots.
-- `robotiq_arg95_description`
-  - Drivers for the Robotiq 2f85 gripper.
-- `zed-ros-wrapper`
-  - Drivers for ZED Mini cameras.
-- `ros-noetic-ur-robot-driver` `(apt installed)`
-  - Drivers for UR5e robot.
-- `ros-noetic-ur-calibration` `(apt installed)`
-  - Drivers for Universal Robots.
-- `lerobot`
-  - ML robotics framework. Installed as python package.
-- `gello_software`
-  - Teleoperation framework. Installed as python package.
+- `motoman` - Drivers for motoman robots.
+- `robotiq_arg95_description` - Drivers for the Robotiq 2f85 gripper.
+- `zed-ros-wrapper` - Drivers for ZED Mini cameras.
+- `ros-noetic-ur-robot-driver` `(apt installed)` - Drivers for UR5e robot.
+- `ros-noetic-ur-calibration` `(apt installed)` - Drivers for Universal Robots.
+- `lerobot` - ML robotics framework. Installed as python package.
+- `gello_software` - Teleoperation framework. Installed as python package.
+- `vamp` - Fast CPU-based motion planning library. Installed as python package.
+- `ImitationLearning` - The main ImitationLearning repository. 
+  - `Rerun` - A data visualizer. Installed as python package.
+  - `pixi` - A package/env manager.
+    
 
-## Setup Workspace
-1. Clone the repository under your catkin workspace as `src`, and then enter the `src` directory:
-```
-mkdir catkin_ws
-cd catkin_ws
-git clone https://github.com/Atlinx/pracsys_imitation_learning_ws.git src 
-```
-2. Install the submodules and check for dependencies:
-```
-./install.sh
-```
-3. Go into the repo directory and install dependencies:
-```
-rosdep install --from-paths src --ignore-src -r -y
-```
+## Install
+
+1. Download and run [ws_install.sh](./ws_install.sh) to automatically setup the workspace along with required dependencies.

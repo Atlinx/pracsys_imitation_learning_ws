@@ -1,21 +1,24 @@
 [submodule "motoman"]
-	path = motoman
+	path = src/motoman
 	url = https://github.com/DanManN/motoman.git
 	branch = kinetic-devel
 [submodule "robotiq_arg85_description"]
-	path = robotiq_arg85_description
+	path = src/robotiq_arg85_description
 	url = https://github.com/a-price/robotiq_arg85_description.git
 	branch = master
 [submodule "zed-ros-wrapper"]
-	path = zed-ros-wrapper
+	path = src/zed-ros-wrapper
 	url = https://github.com/stereolabs/zed-ros-wrapper.git
 [submodule "gello_software"]
-	path = gello_software
+	path = src/gello_software
 	url = https://github.com/wuphilipp/gello_software.git
 [submodule "lerobot"]
-	path = lerobot
+	path = src/lerobot
 	url = https://github.com/huggingface/lerobot
 [submodule "vamp"]
-	path = vamp
+	path = src/vamp
 	url = https://github.com/atlinx/vamp
 	branch = motoman
+[submodule "src/ImitationLearning"]
+	path = src/ImitationLearning
+	url = https://github.com/JoeDoerr/ImitationLearning
