@@ -44,8 +44,8 @@ function handle_options() {
 
   # Process options using getopts
   # 'h' for help, 'c:' for catkin-ws (requires an argument), 'g:' for gh-clone (requires an argument)
-  UPDATE_BASHRC=False
-  DEBUG_TOOLS=False
+  UPDATE_BASHRC=false
+  DEBUG_TOOLS=false
   while getopts "hc:g:bd" opt; do
     case $opt in
       h)
@@ -73,10 +73,10 @@ function handle_options() {
         esac
         ;;
       b)
-        UPDATE_BASHRC=True
+        UPDATE_BASHRC=true
         ;;
       d)
-        DEBUG_TOOLS=True
+        DEBUG_TOOLS=true
         ;;
       \?) # Invalid option
         echo -e "\e[31m🛑 Invalid option: -$OPTARG\e[0m\n" >&2
@@ -106,14 +106,21 @@ if [[ -z "$GH_CLONE" ]]; then
   GH_CLONE="git clone https://github.com/"
 fi
 
+IS_WSL=false
+if grep -qi microsoft /proc/version; then
+  IS_WSL=true
+fi
+
 export CATKIN_WS
 export GH_CLONE
+export IS_WSL
 
 echo -e "\e[36m🌊 Installing workspace:
   CATKIN_WS:     ${CATKIN_WS}
   GH_CLONE:      ${GH_CLONE}
   UPDATE_BASHRC: ${UPDATE_BASHRC}
   DEBUG_TOOLS:   ${DEBUG_TOOLS}
+  IS_WSL:        ${IS_WSL}
 
   Run \`./ws_install.sh -h\` for usage.
 \e[0m"
@@ -127,14 +134,14 @@ fi
 
 cd $SCRIPT_DIR
 
-if [ ! "$(lsb_release -rs)" = "20.04" ]; then
+if [[ "$(lsb_release -rs)" != "20.04" ]]; then
   echo -e "\e[31m🛑 ERROR: Linux distro must be Ubuntu 20.04 (focal)!\e[0m"
 fi
 
 echo "🧰 Setting up Imitation Learning workspace..."
 
 
-if [ -d "$CATKIN_WS" ]; then
+if [[ -d "$CATKIN_WS" ]]; then
   read -p "Catkin workspace already exists @ $CATKIN_WS. Would you like to remove the workspace and reinstall? (y/N): " answer
   answer=${answer:-n}
 
@@ -157,7 +164,7 @@ else
   echo "  Pixi already installed — Skipping..."
 fi
 # Exit if we are in a PIXI shell, since that can mess with the installation
-if [ "$PIXI_IN_SHELL" = "1" ]; then
+if [[ "$PIXI_IN_SHELL" == "1" ]]; then
   echo -e "\e[31m🛑 Detected active pixi env: \"$PIXI_ENVIRONMENT_NAME\". Please the pixi shell exit before running ws_install.sh.\e[0m\n" >&2
   exit
 fi
@@ -167,11 +174,12 @@ fi
 
 # Install ROS noetic
 echo "🤖 Installing ROS"
-if [ ! -d "/opt/ros/noetic" ]; then
+if [[ ! -d "/opt/ros/noetic" ]]; then
   sudo sh -c 'sudo echo "deb http://packages.ros.org/ros/ubuntu focal main" > /etc/apt/sources.list.d/ros-latest.list'
   curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
   sudo apt-get update
   sudo apt-get install ros-noetic-desktop-full python3-rosdep -y
+  sudo rosdep init
 else
   echo "  ROS already installed — Skipping..."
 fi
@@ -181,16 +189,43 @@ fi
 
 # Install Catkin
 echo "🐱 Installing Catkin"
-sudo apt-get install python3-catkin-tools -y
-sudo rosdep init
+if ! command -v catkin &>/dev/null; then
+  sudo apt-get install python3-catkin-tools -y
+else
+  echo "  Catkin already installed — Skipping..."
+fi
 source /opt/ros/noetic/setup.bash
 
 
 
 
+# Install CUDA globally
+echo "👽 Installing CUDA 12.8"
+if ! command -v "nvcc" &>/dev/null; then
+  if [[ "$IS_WSL" == true ]]; then
+    CUDA_URL=https://developer.download.nvidia.com/compute/cuda/repos/wsl-ubuntu/x86_64/cuda-keyring_1.1-1_all.deb
+  else
+    CUDA_URL=https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/cuda-keyring_1.1-1_all.deb
+  fi
+  wget -O /tmp/cuda-keyring_1.1-1_all.deb $CUDA_URL
+  sudo dpkg -i /tmp/cuda-keyring_1.1-1_all.deb
+  sudo apt-get update
+  sudo apt-get -y install cuda-toolkit-12-8
+  export PATH="/usr/local/cuda-12.8/bin:$PATH"
+  if ! grep -Fxq "export PATH=\"/usr/local/cuda-12.8/bin:\$PATH\"" ~/.bashrc; then
+    echo "export PATH=\"/usr/local/cuda-12.8/bin:\$PATH\"" >> ~/.bashrc
+  fi
+else
+  echo "  CUDA already installed — Skipping..."
+fi
+
+
+
+
+
 # Install ZED SDK
-echo "🦓 Installing ZED SDK"
-if [ ! -e "/usr/local/zed/" ]; then
+echo "🦓 Installing ZED SDK (CUDA 12.X)"
+if [[ ! -e "/usr/local/zed/" ]]; then
   sudo apt-get install zstd -y
   curl -L https://download.stereolabs.com/zedsdk/5.0/cu12/ubuntu20 -o zed_installer.run
   chmod +x zed_installer.run
@@ -209,20 +244,21 @@ sudo apt-get install git -y
 ${GH_CLONE}Atlinx/pracsys_imitation_learning_ws $CATKIN_WS
 cd $CATKIN_WS
 git submodule update --init --recursive
-cd $CATKIN_WS/ImitationLearning
-pixi shell-hook --manifest-path $CATKIN_WS/ImitationLearning/pixi.toml
+cd $CATKIN_WS/src/ImitationLearning
 pixi install --all
+eval "$(pixi shell-hook --manifest-path $CATKIN_WS/src/ImitationLearning/pixi.toml)"
 cd $CATKIN_WS/src
 mv zed-ros-wrapper/zed-ros-interfaces zed-ros-interfaces
 cd $CATKIN_WS
+export CATKIN_WS_PIXI="$CATKIN_WS/src/ImitaitonLearning/.pixi"
 catkin init
-catkin config --cmake-args -DPYTHON_EXECUTABLE=/usr/bin/python3 -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+catkin config --cmake-args -DPYTHON_EXECUTABLE=/usr/bin/python3 -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCUDA_TOOLKIT_ROOT_DIR=$CATKIN_WS_PIXI/envs/py38 --extend /opt/ros/noetic
 
 
 
 # Install dependencies
-echo "📦 Installing Dependencies"
-echo "    📦 Installing ROS Dependencies"
+echo "📦 Installing ROS Dependencies"
+# Vamp dependencies are included in this package list.
 sudo apt-get install ros-noetic-industrial-msgs \
   ros-noetic-soem \
   ros-noetic-industrial-core \
@@ -237,15 +273,14 @@ sudo apt-get install ros-noetic-industrial-msgs \
   ros-noetic-message-runtime \
   ros-noetic-roscpp \
   ros-noetic-std-msgs \
-  # Vamp dependencies  
   libeigen3-dev \
   tmux cmake -y
 # Fetch build dependencies for catkin packages using rosdep
 cd $CATKIN_WS
-rosdep update --include-eol-distros
+rosdep update --rosdistro=noetic
 rosdep install --from-paths src --ignore-src -r -y
 # Rerun dependencies
-echo "    📦 Installing Rerun dependencies..."
+echo "📦 Installing Rerun dependencies..."
 sudo apt-get -y install \
   libclang-dev \
   libatk-bridge2.0 \
@@ -261,31 +296,33 @@ sudo apt-get -y install \
   libxkbcommon-x11-0 \
   patchelf
 # Rerun WSL dependencies
-sudo add-apt-repository ppa:kisak/kisak-mesa -y
-sudo apt-get update
-sudo apt-get install -y mesa-vulkan-drivers
+if [[ "$IS_WSL" == true ]]; then
+  sudo add-apt-repository ppa:kisak/turtle -y
+  sudo apt-get update
+  sudo apt-get install -y mesa-vulkan-drivers
+fi
 
 # UR5 drivers
-echo "    📦 Installing UR5 drivers..."
+echo "📦 Installing UR5 drivers..."
 sudo apt install ros-noetic-ur-robot-driver ros-noetic-ur-calibration -y
 
 # Install LeRobot package
-echo "    📦 Installing LeRobot package..."
+echo "📦 Installing LeRobot package..."
 cd $CATKIN_WS/src/lerobot
-pixi run -e py311 -- bash -lc '
+pixi run -e py311 -- bash -c '
   pip install -e .
 '
 touch CATKIN_IGNORE
 
 # Ignore Motoman packages
-echo "    📦 Installing Motoman package..."
+echo "📦 Installing Motoman package..."
 cd $CATKIN_WS/src/motoman
 ./ignore_pkgs.sh
 
 # Install Gello package
-echo "    📦 Installing Gello package..."
+echo "📦 Installing Gello package..."
 cd $CATKIN_WS/src/gello_software
-pixi run -e py38 -- bash -lc '
+pixi run -e py38 -- bash -c '
   pip install -r requirements.txt
   pip install -e .
   pip install -e third_party/DynamixelSDK/python
@@ -293,15 +330,17 @@ pixi run -e py38 -- bash -lc '
 touch CATKIN_IGNORE
 
 # Install Vamp
-echo "    📦 Installing Vamp package..."
-cd $CATKIN_WS/src
-${GH_CLONE}Atlinx/vamp
-cd $CATKIN_WS/src/ImitationLearning
-pixi run -e py311 -- bash -c 'cd ../vamp && pip install .'
-pixi run -e py38 -- bash -c 'cd ../vamp && pip install .'
+echo "📦 Installing Vamp package..."
+cd $CATKIN_WS/src/vamp
+pixi run -e py311 -- bash -c '
+  pip install .
+'
+pixi run -e py38 -- bash -c '
+  pip install .
+'
 
 # Download ycb models
-echo "    📦 Downloading YCB models..."
+echo "📦 Downloading YCB models..."
 cd $CATKIN_WS/src/ImitationLearning
 ./xmls/objects/ycb/download_models.sh
 
@@ -319,7 +358,7 @@ source $CATKIN_WS/devel/setup.bash
 
 
 # Install debug tools
-if [[ "$DEBUG_TOOLS" == "True" ]]; then
+if [[ "$DEBUG_TOOLS" == true ]]; then
   echo "🦗 Install Debug tools"
   sudo apt-get install nano neovim vim tree -y
   PS1_ECHO='export PS1="\[$(tput setaf 165)\]\u\[$(tput setaf 171)\]@\[$(tput setaf 213)\]\h \[$(tput setaf 219)\]\w \[$(tput sgr0)\]$ "'
@@ -355,8 +394,9 @@ fi
 
 echo -e "\e[32m✅ Install done!\e[0m"
 if [[ "$UPDATE_BASHRC" != "True" ]]; then
-  echo -e "\e[33m⚠️ ./bashrc was not updated. Remember to run \`source \$CATKIN_WS/devel/setup.bash\` before running \`catkin build\`.\e[0m"
+  echo -e "\e[33m⚠️ ./bashrc was not updated. Remember to run \`source $CATKIN_WS/devel/setup.bash\` before running \`catkin build\`.\e[0m"
 fi
+
 echo "📩 To enter the repo, run:
 
-  \`cd $CATKIN_WS/src/ImitationLearning\`"
+  cd $CATKIN_WS/src/ImitationLearning"
