@@ -183,7 +183,6 @@ fi
 echo "🐱 Installing Catkin"
 sudo apt-get install python3-catkin-tools -y
 sudo rosdep init
-rosdep update
 source /opt/ros/noetic/setup.bash
 
 
@@ -211,6 +210,7 @@ ${GH_CLONE}Atlinx/pracsys_imitation_learning_ws $CATKIN_WS
 cd $CATKIN_WS
 git submodule update --init --recursive
 cd $CATKIN_WS/ImitationLearning
+pixi shell-hook --manifest-path $CATKIN_WS/ImitationLearning/pixi.toml
 pixi install --all
 cd $CATKIN_WS/src
 mv zed-ros-wrapper/zed-ros-interfaces zed-ros-interfaces
@@ -242,7 +242,7 @@ sudo apt-get install ros-noetic-industrial-msgs \
   tmux cmake -y
 # Fetch build dependencies for catkin packages using rosdep
 cd $CATKIN_WS
-rosdep update
+rosdep update --include-eol-distros
 rosdep install --from-paths src --ignore-src -r -y
 # Rerun dependencies
 echo "    📦 Installing Rerun dependencies..."
