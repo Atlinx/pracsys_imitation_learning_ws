@@ -252,7 +252,7 @@ mv zed-ros-wrapper/zed-ros-interfaces zed-ros-interfaces
 cd $CATKIN_WS
 export CATKIN_WS_PIXI="$CATKIN_WS/src/ImitaitonLearning/.pixi"
 catkin init
-catkin config --extend /opt/ros/noetic --cmake-args -DPYTHON_EXECUTABLE=/usr/bin/python3 -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCUDA_TOOLKIT_ROOT_DIR=$CATKIN_WS_PIXI/envs/py38
+catkin config --extend /opt/ros/noetic --cmake-args -DPYTHON_EXECUTABLE=/usr/bin/python3 -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda-12.8
 
 
 
@@ -307,9 +307,15 @@ echo "📦 Installing Motoman package..."
 cd $CATKIN_WS/src/motoman
 ./ignore_pkgs.sh
 
+
+
+
 # Build Pixi env
 cd $CATKIN_WS
 ./pixi_rebuild.sh
+
+
+
 
 # Download ycb models
 echo "📦 Downloading YCB models..."
