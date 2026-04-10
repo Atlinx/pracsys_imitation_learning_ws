@@ -247,9 +247,6 @@ git checkout master
 git pull # Fetch the latest version, since ImitationLearning changes frequently
 cd $CATKIN_WS
 git submodule update --init --recursive
-cd $CATKIN_WS/src/ImitationLearning
-pixi install --all
-eval "$(pixi shell-hook --manifest-path $CATKIN_WS/src/ImitationLearning/pixi.toml)"
 cd $CATKIN_WS/src
 mv zed-ros-wrapper/zed-ros-interfaces zed-ros-interfaces
 cd $CATKIN_WS
@@ -305,38 +302,14 @@ if [[ "$IS_WSL" == true ]]; then
   sudo apt-get install -y mesa-vulkan-drivers
 fi
 
-# Install LeRobot package
-echo "📦 Installing LeRobot package..."
-cd $CATKIN_WS/src/lerobot
-pixi run -m $PIXI_PROJECT_MANIFEST -e py311 -- bash -c '
-  pip install -e .
-'
-touch CATKIN_IGNORE
-
 # Ignore Motoman packages
 echo "📦 Installing Motoman package..."
 cd $CATKIN_WS/src/motoman
 ./ignore_pkgs.sh
 
-# Install Gello package
-echo "📦 Installing Gello package..."
-cd $CATKIN_WS/src/gello_software
-pixi run -m $PIXI_PROJECT_MANIFEST -e py38 -- bash -c '
-  pip install -r requirements.txt
-  pip install -e .
-  pip install -e third_party/DynamixelSDK/python
-'
-touch CATKIN_IGNORE
-
-# Install Vamp
-echo "📦 Installing Vamp package..."
-cd $CATKIN_WS/src/vamp
-pixi run -m $PIXI_PROJECT_MANIFEST -e py311 -- bash -c '
-  pip install .
-'
-pixi run -m $PIXI_PROJECT_MANIFEST -e py38 -- bash -c '
-  pip install .
-'
+# Build Pixi env
+cd $CATKIN_WS
+./pixi_rebuild.sh
 
 # Download ycb models
 echo "📦 Downloading YCB models..."
