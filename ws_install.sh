@@ -216,6 +216,7 @@ if ! command -v "nvcc" &>/dev/null; then
     echo "export PATH=\"/usr/local/cuda-12.8/bin:\$PATH\"" >> ~/.bashrc
   fi
 else
+
   echo "  CUDA already installed — Skipping..."
 fi
 
@@ -242,6 +243,8 @@ fi
 echo "🚧 Installing Pracsys Workspace"
 sudo apt-get install git -y
 ${GH_CLONE}Atlinx/pracsys_imitation_learning_ws $CATKIN_WS
+git checkout master
+git pull # Fetch the latest version, since ImitationLearning changes frequently
 cd $CATKIN_WS
 git submodule update --init --recursive
 cd $CATKIN_WS/src/ImitationLearning
@@ -252,7 +255,7 @@ mv zed-ros-wrapper/zed-ros-interfaces zed-ros-interfaces
 cd $CATKIN_WS
 export CATKIN_WS_PIXI="$CATKIN_WS/src/ImitaitonLearning/.pixi"
 catkin init
-catkin config --cmake-args -DPYTHON_EXECUTABLE=/usr/bin/python3 -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCUDA_TOOLKIT_ROOT_DIR=$CATKIN_WS_PIXI/envs/py38 --extend /opt/ros/noetic
+catkin config --extend /opt/ros/noetic --cmake-args -DPYTHON_EXECUTABLE=/usr/bin/python3 -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCUDA_TOOLKIT_ROOT_DIR=$CATKIN_WS_PIXI/envs/py38
 
 
 
@@ -302,14 +305,10 @@ if [[ "$IS_WSL" == true ]]; then
   sudo apt-get install -y mesa-vulkan-drivers
 fi
 
-# UR5 drivers
-echo "📦 Installing UR5 drivers..."
-sudo apt install ros-noetic-ur-robot-driver ros-noetic-ur-calibration -y
-
 # Install LeRobot package
 echo "📦 Installing LeRobot package..."
 cd $CATKIN_WS/src/lerobot
-pixi run -e py311 -- bash -c '
+pixi run -m $PIXI_PROJECT_MANIFEST -e py311 -- bash -c '
   pip install -e .
 '
 touch CATKIN_IGNORE
@@ -322,7 +321,7 @@ cd $CATKIN_WS/src/motoman
 # Install Gello package
 echo "📦 Installing Gello package..."
 cd $CATKIN_WS/src/gello_software
-pixi run -e py38 -- bash -c '
+pixi run -m $PIXI_PROJECT_MANIFEST -e py38 -- bash -c '
   pip install -r requirements.txt
   pip install -e .
   pip install -e third_party/DynamixelSDK/python
@@ -332,10 +331,10 @@ touch CATKIN_IGNORE
 # Install Vamp
 echo "📦 Installing Vamp package..."
 cd $CATKIN_WS/src/vamp
-pixi run -e py311 -- bash -c '
+pixi run -m $PIXI_PROJECT_MANIFEST -e py311 -- bash -c '
   pip install .
 '
-pixi run -e py38 -- bash -c '
+pixi run -m $PIXI_PROJECT_MANIFEST -e py38 -- bash -c '
   pip install .
 '
 
