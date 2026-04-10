@@ -237,16 +237,13 @@ sudo apt-get install ros-noetic-industrial-msgs \
   ros-noetic-message-runtime \
   ros-noetic-roscpp \
   ros-noetic-std-msgs \
+  # Vamp dependencies  
+  libeigen3-dev \
   tmux cmake -y
 # Fetch build dependencies for catkin packages using rosdep
 cd $CATKIN_WS
 rosdep update
 rosdep install --from-paths src --ignore-src -r -y
-
-# Vamp dependencies
-echo "    📦 Installing VAMP dependencies..."
-sudo apt-get -y install libeigen3-dev
-
 # Rerun dependencies
 echo "    📦 Installing Rerun dependencies..."
 sudo apt-get -y install \
