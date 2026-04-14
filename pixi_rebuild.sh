@@ -10,8 +10,7 @@ eval "$(pixi shell-hook --manifest-path $CATKIN_WS/src/ImitationLearning/pixi.to
 # Install LeRobot package
 echo "📦 Installing LeRobot package..."
 cd $CATKIN_WS/src/lerobot
-pixi run -m $PIXI_PROJECT_MANIFEST
- -e py311 -- bash -c '
+pixi run -m $PIXI_PROJECT_MANIFEST -e py311 -- bash -c '
   pip install -e .
 '
 touch CATKIN_IGNORE
