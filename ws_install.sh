@@ -152,6 +152,9 @@ if [[ -d "$CATKIN_WS" ]]; then
   rm -rf $CATKIN_WS
 fi
 
+sudo apt-get update
+sudo apt-get install curl -y
+
 
 
 
