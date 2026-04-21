@@ -38,6 +38,13 @@ install_vamp() {
   '
 }
 
+generate_stubs() {
+  echo "📦 Generating stubs..."
+  cd "$CATKIN_WS/src/ImitationLearning"
+
+  ./tools/generate_py_stubs.sh
+}
+
 install_package() {
   case "$1" in
     lerobot)
@@ -49,9 +56,12 @@ install_package() {
     vamp)
       install_vamp
       ;;
+    stubs)
+      generate_stubs
+      ;;
     *)
       echo "❌ Unknown package: $1"
-      echo "Valid options: lerobot gello vamp"
+      echo "Valid options: lerobot gello vamp stubs"
       exit 1
       ;;
   esac
@@ -68,6 +78,7 @@ if [[ $# -eq 0 ]]; then
   install_lerobot
   install_gello
   install_vamp
+  generate_stubs
 else
   echo "🔧 Activating Pixi shell hook..."
   eval "$(pixi shell-hook --manifest-path "$PIXI_MANIFEST_PATH")"

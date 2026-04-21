@@ -268,6 +268,7 @@ fi
 echo "🚧 Installing Pracsys Workspace"
 sudo apt-get install git -y
 ${GH_CLONE}Atlinx/pracsys_imitation_learning_ws $CATKIN_WS
+cd $CATKIN_WS
 git submodule update --init --recursive
 cd $CATKIN_WS/src/ImitationLearning
 git checkout master
