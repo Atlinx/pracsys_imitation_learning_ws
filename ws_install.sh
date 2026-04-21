@@ -153,7 +153,7 @@ if [[ -d "$CATKIN_WS" ]]; then
   rm -rf $CATKIN_WS
 fi
 
-if [[ "$GH_CLONE" == "git clone https://github.com/" && ! -x "$(command -v dgh)" ]]; then
+if [[ "$GH_CLONE" == "git clone https://github.com/" && ! -x "$(command -v gh)" ]]; then
   read -p "$(echo -e '\e[33m⚠️  WARN: GitHub CLI (gh) is recommended for cloning GitHub repositories using https, but it is not installed. Would you like to install it? (Y/n): \e[0m')" answer
   answer=${answer:-y}
   
@@ -268,14 +268,13 @@ fi
 echo "🚧 Installing Pracsys Workspace"
 sudo apt-get install git -y
 ${GH_CLONE}Atlinx/pracsys_imitation_learning_ws $CATKIN_WS
+git submodule update --init --recursive
+cd $CATKIN_WS/src/ImitationLearning
 git checkout master
 git pull # Fetch the latest version, since ImitationLearning changes frequently
-cd $CATKIN_WS
-git submodule update --init --recursive
 cd $CATKIN_WS/src
 mv zed-ros-wrapper/zed-ros-interfaces zed-ros-interfaces
 cd $CATKIN_WS
-export CATKIN_WS_PIXI="$CATKIN_WS/src/ImitaitonLearning/.pixi"
 catkin init
 catkin config --extend /opt/ros/noetic --cmake-args -DPYTHON_EXECUTABLE=/usr/bin/python3 -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda
 
