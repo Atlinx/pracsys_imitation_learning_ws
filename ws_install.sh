@@ -299,7 +299,7 @@ sudo apt-get install ros-noetic-industrial-msgs \
   ros-noetic-roscpp \
   ros-noetic-std-msgs \
   libeigen3-dev \
-  tmux cmake -y
+  tmux cmake devilspie2 -y
 # Fetch build dependencies for catkin packages using rosdep
 cd $CATKIN_WS
 rosdep update --rosdistro=noetic
