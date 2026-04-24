@@ -279,3 +279,5 @@ tags
 
 # End of https://www.toptal.com/developers/gitignore/api/ROS,Python,C++,vim
 
+.catkin_tools/
+src/zed-ros-interfaces/

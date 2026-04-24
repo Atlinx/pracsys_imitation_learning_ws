@@ -1,6 +1,6 @@
 [submodule "motoman"]
 	path = src/motoman
-	url = https://github.com/DanManN/motoman.git
+	url = https://github.com/atlinx/motoman.git
 	branch = kinetic-devel
 [submodule "robotiq_arg85_description"]
 	path = src/robotiq_arg85_description
@@ -14,11 +14,11 @@
 	url = https://github.com/wuphilipp/gello_software.git
 [submodule "lerobot"]
 	path = src/lerobot
-	url = https://github.com/huggingface/lerobot
+	url = https://github.com/huggingface/lerobot.git
 [submodule "vamp"]
 	path = src/vamp
-	url = https://github.com/atlinx/vamp
+	url = https://github.com/atlinx/vamp.git
 	branch = motoman
 [submodule "src/ImitationLearning"]
 	path = src/ImitationLearning
-	url = https://github.com/JoeDoerr/ImitationLearning
+	url = https://github.com/JoeDoerr/ImitationLearning.git
