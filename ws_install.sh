@@ -277,7 +277,7 @@ cd $CATKIN_WS/src
 mv zed-ros-wrapper/zed-ros-interfaces zed-ros-interfaces
 cd $CATKIN_WS
 catkin init
-catkin config --extend /opt/ros/noetic --cmake-args -DPYTHON_EXECUTABLE=/usr/bin/python3 -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda
+catkin config --extend /opt/ros/noetic --cmake-args -DPYTHON_EXECUTABLE=/usr/bin/python3 -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda -Wno-dev
 
 
 
