@@ -17,3 +17,12 @@ A Catkin ROS workspace for the Imitation Learning repository at PRACSYS lab.
 ## Install
 
 1. Download and run [ws_install.sh](./ws_install.sh) to automatically setup the workspace along with required dependencies.
+
+## Scripts
+
+- `ws_install.sh`
+  - Installs the workspace along with the required dependencies
+- `catkin_build.sh`
+  - Calls `catkin build`, and then `make_compile_commands.sh`
+- `make_compile_commands.sh`
+  - Combines the `compile_command.json` files generated within each built package into a central `build/compile_command.json` file
