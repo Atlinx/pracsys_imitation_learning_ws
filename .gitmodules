@@ -22,3 +22,6 @@
 [submodule "src/ImitationLearning"]
 	path = src/ImitationLearning
 	url = https://github.com/JoeDoerr/ImitationLearning.git
+[submodule "src/Kalib"]
+	path = src/Kalib
+	url = https://github.com/Atlinx/Kalib
