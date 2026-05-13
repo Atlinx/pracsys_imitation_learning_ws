@@ -9,7 +9,7 @@ install_lerobot() {
   echo "📦 Installing LeRobot package..."
   cd "$CATKIN_WS/src/lerobot"
   pixi run -m "$PIXI_PROJECT_MANIFEST" -e py311 -- bash -c '
-    pip install .
+    pip install . --user
   '
   touch CATKIN_IGNORE
 }
