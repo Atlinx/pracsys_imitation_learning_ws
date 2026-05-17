@@ -25,3 +25,9 @@
 [submodule "src/Kalib"]
 	path = src/Kalib
 	url = https://github.com/Atlinx/Kalib
+[submodule "src/easy_handeye"]
+	path = src/easy_handeye
+	url = https://github.com/IFL-CAMP/easy_handeye
+[submodule "src/easy_aruco"]
+	path = src/easy_aruco
+	url = https://github.com/Atlinx/easy_aruco
