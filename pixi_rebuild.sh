@@ -18,7 +18,7 @@ install_gello() {
   echo "📦 Installing Gello package..."
   cd "$CATKIN_WS/src/gello_software"
   pixi run -m "$PIXI_PROJECT_MANIFEST" -e py38 -- bash -c '
-    pip install -r requirements.txt
+    pip install -r requirements.txt --user
     pip install .
     pip install third_party/DynamixelSDK/python
   '
