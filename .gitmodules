@@ -31,3 +31,7 @@
 [submodule "src/easy_aruco"]
 	path = src/easy_aruco
 	url = https://github.com/Atlinx/easy_aruco
+[submodule "src/Grounded-SAM-2-iterative"]
+	path = src/Grounded-SAM-2-iterative
+	url = https://github.com/mihirchanduka/Grounded-SAM-2-iterative
+	branch = gsam_server
