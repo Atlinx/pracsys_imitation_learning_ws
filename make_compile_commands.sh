@@ -17,9 +17,9 @@ do
         fi
 
         cat $f | sed '1d;$d' >> $concatenated
-    fi
 
-    first=0
+        first=0
+    fi
 done
 
 echo "]" >> $concatenated

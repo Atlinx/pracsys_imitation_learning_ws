@@ -281,5 +281,3 @@ tags
 
 .catkin_tools/
 src/zed-ros-interfaces/
-
-.vscode
