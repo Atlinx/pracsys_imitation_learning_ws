@@ -235,7 +235,7 @@ if ! command -v "nvcc" &>/dev/null; then
   wget -O /tmp/cuda-keyring_1.1-1_all.deb $CUDA_URL
   sudo dpkg -i /tmp/cuda-keyring_1.1-1_all.deb
   sudo apt-get update
-  sudo apt-get -y install cuda-toolkit-12-8
+  sudo apt-get -y install cuda-toolkit-12-8 nvidia-container-toolkit
   export PATH="/usr/local/cuda-12.8/bin:$PATH"
   if ! grep -Fxq "export PATH=\"/usr/local/cuda-12.8/bin:\$PATH\"" ~/.bashrc; then
     echo "export PATH=\"/usr/local/cuda-12.8/bin:\$PATH\"" >> ~/.bashrc
