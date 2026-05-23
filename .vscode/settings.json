@@ -1,20 +1,42 @@
 {
-    "cmake.sourceDirectory": "${workspaceFolder}/build/catkin_tools_prebuild",
-    "python.analysis.extraPaths": [
-        "${workspaceFolder}/devel/lib/python3/dist-packages",
-        "/opt/ros/noetic/lib/python3/dist-packages",
-        "${workspaceFolder}/src/ImitationLearning/.pixi/envs/py38/lib/python3.8/site-packages",
-        "/usr/lib/python3/dist-packages"
-    ],
-    "[cpp]": {
-        "editor.defaultFormatter": "ms-vscode.cpptools"
+  "cmake.sourceDirectory": "${workspaceFolder}/build/catkin_tools_prebuild",
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/devel/lib/python3/dist-packages",
+    "/opt/ros/noetic/lib/python3/dist-packages",
+    "${workspaceFolder}/src/ImitationLearning/.pixi/envs/py38/lib/python3.8/site-packages",
+    "/usr/lib/python3/dist-packages"
+  ],
+  "[cpp]": {
+    "editor.defaultFormatter": "ms-vscode.cpptools"
+  },
+  "terminal.integrated.profiles.linux": {
+    "ROS bash": {
+      "path": "/usr/bin/bash",
+      "args": [
+        "--init-file",
+        "${workspaceFolder}/.vscode/init_ros_bash.sh",
+        "-i"
+      ],
+      "overrideName": true
     },
-    "terminal.integrated.profiles.linux": {
-        "ROS bash": {
-            "path": "/usr/bin/bash",
-            "args": ["--init-file", "${workspaceFolder}/.vscode/init_ros_bash.sh", "-i"],
-            "overrideName": true
-        }
+    "Pixi py38": {
+      "path": "/usr/bin/bash",
+      "args": [
+        "--init-file",
+        "${workspaceFolder}/.vscode/init_pixi_ros_py38.sh",
+        "-i"
+      ],
+      "overrideName": true
     },
-    "terminal.integrated.defaultProfile.linux": "ROS bash",
+    "Pixi py311": {
+      "path": "/usr/bin/bash",
+      "args": [
+        "--init-file",
+        "${workspaceFolder}/.vscode/init_pixi_ros_py311.sh",
+        "-i"
+      ],
+      "overrideName": true
+    }
+  },
+  "terminal.integrated.defaultProfile.linux": "ROS bash",
 }

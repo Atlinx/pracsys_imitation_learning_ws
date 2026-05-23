@@ -42,3 +42,6 @@
 [submodule "src/Fast-FoundationStereo"]
 	path = src/Fast-FoundationStereo
 	url = https://github.com/Atlinx/Fast-FoundationStereo
+[submodule "src/curobo"]
+	path = src/curobo
+	url = https://github.com/NVlabs/curobo
