@@ -296,6 +296,7 @@ sudo apt-get install ros-noetic-industrial-msgs \
   ros-noetic-message-runtime \
   ros-noetic-roscpp \
   ros-noetic-std-msgs \
+  ros-noetic-marker-msgs \
   libeigen3-dev \
   tmux cmake devilspie2 -y
 # Fetch build dependencies for catkin packages using rosdep
@@ -352,7 +353,7 @@ cd $CATKIN_WS/src/ImitationLearning
 echo "🐱 Build Catkin"
 source ~/.bashrc
 cd $CATKIN_WS
-catkin build
+./catkin_build.sh
 source $CATKIN_WS/devel/setup.bash
 
 
