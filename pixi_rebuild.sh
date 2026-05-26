@@ -38,6 +38,15 @@ install_vamp() {
   '
 }
 
+install_curobo() {
+  echo "📦 Installing curobo package..."
+  cd "$CATKIN_WS/src/curobo"
+
+  pixi run -m "$PIXI_PROJECT_MANIFEST" -e py311 -- bash -c '
+    pip install .[cu12]
+  '
+}
+
 generate_stubs() {
   echo "📦 Generating stubs..."
   cd "$CATKIN_WS/src/ImitationLearning"
@@ -56,12 +65,15 @@ install_package() {
     vamp)
       install_vamp
       ;;
+    curobo)
+      install_curobo
+      ;;
     stubs)
       generate_stubs
       ;;
     *)
       echo "❌ Unknown package: $1"
-      echo "Valid options: lerobot gello vamp stubs"
+      echo "Valid options: lerobot gello vamp curobo stubs"
       exit 1
       ;;
   esac
@@ -78,6 +90,7 @@ if [[ $# -eq 0 ]]; then
   install_lerobot
   install_gello
   install_vamp
+  install_curobo
   generate_stubs
 else
   echo "🔧 Activating Pixi shell hook..."

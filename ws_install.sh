@@ -235,7 +235,7 @@ if ! command -v "nvcc" &>/dev/null; then
   wget -O /tmp/cuda-keyring_1.1-1_all.deb $CUDA_URL
   sudo dpkg -i /tmp/cuda-keyring_1.1-1_all.deb
   sudo apt-get update
-  sudo apt-get -y install cuda-toolkit-12-8
+  sudo apt-get -y install cuda-toolkit-12-8 nvidia-container-toolkit
   export PATH="/usr/local/cuda-12.8/bin:$PATH"
   if ! grep -Fxq "export PATH=\"/usr/local/cuda-12.8/bin:\$PATH\"" ~/.bashrc; then
     echo "export PATH=\"/usr/local/cuda-12.8/bin:\$PATH\"" >> ~/.bashrc
@@ -273,8 +273,6 @@ git submodule update --init --recursive
 cd $CATKIN_WS/src/ImitationLearning
 git checkout master
 git pull # Fetch the latest version, since ImitationLearning changes frequently
-cd $CATKIN_WS/src
-mv zed-ros-wrapper/zed-ros-interfaces zed-ros-interfaces
 cd $CATKIN_WS
 catkin init
 catkin config --extend /opt/ros/noetic --cmake-args -DPYTHON_EXECUTABLE=/usr/bin/python3 -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCUDA_TOOLKIT_ROOT_DIR=/usr/local/cuda -Wno-dev
@@ -298,6 +296,7 @@ sudo apt-get install ros-noetic-industrial-msgs \
   ros-noetic-message-runtime \
   ros-noetic-roscpp \
   ros-noetic-std-msgs \
+  ros-noetic-marker-msgs \
   libeigen3-dev \
   tmux cmake devilspie2 -y
 # Fetch build dependencies for catkin packages using rosdep
@@ -354,7 +353,7 @@ cd $CATKIN_WS/src/ImitationLearning
 echo "🐱 Build Catkin"
 source ~/.bashrc
 cd $CATKIN_WS
-catkin build
+./catkin_build.sh
 source $CATKIN_WS/devel/setup.bash
 
 
